@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var userService = require('../services/user-services');
+var passport = require('passport');
 /* GET users listing. */
 router.get('/', function(req, res, next) {
     res.send('respond with a resource');
@@ -20,7 +21,7 @@ router.post('/create', function(req, res, next) {
             var vm = {
                 title: "Create Account",
                 input: req.body,
-                error: "Something went wrong"
+                error: err
             };
             delete vm.input.password;
             return res.render('users/create', vm);
@@ -29,4 +30,8 @@ router.post('/create', function(req, res, next) {
     });
 });
 
+
+router.post('/login', passport.authenticate('local'), function(req, res, next){
+    res.redirect('/orders');
+});
 module.exports = router;
