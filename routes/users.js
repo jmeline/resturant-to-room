@@ -26,7 +26,9 @@ router.post('/create', function(req, res, next) {
             delete vm.input.password;
             return res.render('users/create', vm);
         }
-        res.redirect('/orders');
+        req.login(req.body, function(){
+            res.redirect('/orders');
+        });
     });
 });
 
