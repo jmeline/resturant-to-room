@@ -7,6 +7,8 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var expressSession = require('express-session');
 var flash = require('connect-flash');
+var connectMongo = require('connect-mongo');
+var MongoStore = connectMongo(expressSession);
 
 var config = require('./config');
 var routes = require('./routes/index');
@@ -35,7 +37,10 @@ app.use(expressSession(
     {
         secret: 'getting hungry',
         saveUninitialized: false,
-        resave: false
+        resave: false,
+        store: new MongoStore({
+            mongooseConnection: mongoose.connection
+        })
     }
 ));
 app.use(flash());

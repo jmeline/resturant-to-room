@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var userService = require('../services/user-service');
+var config = require('../config');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -34,6 +35,12 @@ router.post('/create', function(req, res, next) {
 });
 
 router.post('/login', 
+  function(req, res, next){
+      if(req.body.rememberMe){
+        req.session.cookie.maxAge = config.cookieMaxAge;
+      }
+      next();
+  },
   passport.authenticate('local', {
     failureRedirect: '/', 
     successRedirect: '/orders',
